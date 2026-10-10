@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPCL-1 — A rocket built from a champagne glass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,380;9..144,560;9..144,620&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F3EF; --paper-raised:#FBFCFA; --ink:#1C1F1B; --ink-muted:#5B6158;
+    --royal:#2F3B8C; --royal-deep:#1C2458; --coral:#B84A52; --amber:#E2A33B;
+    --line:#D8DBD2; --radius:3px; --good:#3C7A5E;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;} }
+  a{color:var(--royal);}
+  a:focus-visible, button:focus-visible, input:focus-visible{outline:2px solid var(--royal); outline-offset:2px;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 28px;}
+  .prose{max-width:640px;}
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:620; line-height:1.08; margin:0 0 .5em 0; letter-spacing:-0.01em;}
+  h2{font-size:clamp(1.7rem,3.4vw,2.5rem); font-weight:560;}
+  h3{font-size:1.15rem; font-weight:560;}
+  p{margin:0 0 1em 0;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .eyebrow{color:var(--ink-muted); font-size:0.92rem; margin:0 0 .4em 0;}
+
+  /* ---------- Nav ---------- */
+  header{position:sticky; top:0; background:var(--paper); z-index:50; border-bottom:1px solid var(--line);}
+  header .row{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; padding:18px 0;}
+  .wordmark{font-family:'Fraunces',serif; font-weight:620; font-size:1.3rem; color:var(--royal-deep); text-decoration:none;}
+  nav{display:flex; gap:4px; flex-wrap:wrap;}
+  nav button{
+    appearance:none; border:none; background:none; font-family:'IBM Plex Sans',sans-serif;
+    font-size:0.92rem; color:var(--ink-muted); padding:8px 14px; border-radius:var(--radius); cursor:pointer;
+  }
+  nav button:hover{color:var(--ink);}
+  nav button[aria-current="page"]{color:var(--royal); background:rgba(47,59,140,0.08); font-weight:600;}
+
+  .tab{display:none;}
+  .tab.active{display:block;}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:56px 0 48px 0;}
+  .hero h1{font-size:clamp(2.2rem,5.4vw,3.6rem); max-width:14ch; color:var(--royal-deep);}
+  .hero .lede{max-width:52ch; font-size:1.15rem; color:var(--ink-muted); margin-top:18px;}
+  .hero-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; margin-top:12px;}
+  @media (max-width:860px){ .hero-grid{grid-template-columns:1fr;} }
+  .facts-row{display:flex; gap:28px; margin-top:40px; flex-wrap:wrap;}
+  .fact .num{font-family:'IBM Plex Mono',monospace; font-size:1.7rem; color:var(--royal);}
+  .fact .label{color:var(--ink-muted); font-size:0.9rem; margin-top:2px;}
+  .rocket-art{width:100%; height:auto;}
+  .rocket-art .draw{stroke-dasharray:900; stroke-dashoffset:900; animation:draw 1.4s ease-out forwards;}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+
+  section{padding:52px 0;}
+  section.alt{background:var(--paper-raised); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  section:first-of-type{padding-top:0;}
+
+  .materials-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); margin-top:32px; border:1px solid var(--line);}
+  @media (max-width:760px){ .materials-grid{grid-template-columns:1fr;} }
+  .material{background:var(--paper-raised); padding:28px;}
+  .material svg{width:46px; height:46px; margin-bottom:14px;}
+  .material h3{margin-bottom:4px;}
+  .material .role{color:var(--ink-muted); font-size:0.92rem; margin-bottom:10px;}
+  .material p{font-size:0.95rem; color:var(--ink);}
+
+  .callouts{margin-top:28px; display:grid; grid-template-columns:repeat(4,1fr); gap:24px;}
+  @media (max-width:860px){ .callouts{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .callouts{grid-template-columns:1fr;} }
+  .callout .tag{font-size:0.8rem; color:var(--coral); margin-bottom:4px;}
+  .callout .name{font-weight:600; margin-bottom:4px;}
+  .callout .spec{font-family:'IBM Plex Mono',monospace; font-size:0.85rem; color:var(--ink-muted); line-height:1.5;}
+
+  table{width:100%; border-collapse:collapse; margin-top:28px; font-size:0.95rem;}
+  th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line);}
+  th{font-weight:500; color:var(--ink-muted); font-size:0.85rem;}
+  td.mono, th.mono{font-family:'IBM Plex Mono',monospace;}
+  tr:last-child td{border-bottom:none;}
+  .table-scroll{overflow-x:auto;}
+
+  .note{margin-top:18px; padding:14px 16px; border-left:2px solid var(--coral); background:rgba(184,74,82,0.06); font-size:0.92rem; color:var(--ink);}
+  .note strong{color:var(--coral);}
+  .note.info{border-left-color:var(--royal); background:rgba(47,59,140,0.06);}
+  .note.info strong{color:var(--royal);}
+
+  .calc{margin-top:28px; background:var(--paper-raised); border:1px solid var(--line); padding:32px; display:grid; grid-template-columns:1fr 1fr; gap:36px;}
+  @media (max-width:760px){ .calc{grid-template-columns:1fr;} }
+  .field{margin-bottom:20px;}
+  .field label{display:block; font-size:0.88rem; color:var(--ink-muted); margin-bottom:6px;}
+  .field input{width:100%; padding:10px 12px; border:1px solid var(--line); background:var(--paper); font-family:'IBM Plex Mono',monospace; font-size:1rem; color:var(--ink); border-radius:var(--radius);}
+  .field .hint{font-size:0.8rem; color:var(--ink-muted); margin-top:4px;}
+  .btn{appearance:none; border:1px solid var(--royal); background:none; color:var(--royal); font-family:'IBM Plex Sans',sans-serif; font-size:0.92rem; padding:9px 16px; border-radius:var(--radius); cursor:pointer;}
+  .btn:hover{background:var(--royal); color:#fff;}
+  .btn.solid{background:var(--royal); color:#fff;}
+  .btn.solid:hover{background:var(--royal-deep);}
+  .result{background:var(--royal-deep); color:#fff; padding:28px; border-radius:var(--radius); align-self:start;}
+  .result .big{font-family:'IBM Plex Mono',monospace; font-size:2.6rem; line-height:1;}
+  .result .unit{font-size:1.1rem; opacity:0.8;}
+  .result .sub{margin-top:14px; font-size:0.92rem; opacity:0.85;}
+  .result .row2{display:flex; gap:28px; margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.2);}
+  .result .row2 div .v{font-family:'IBM Plex Mono',monospace; font-size:1.2rem;}
+  .result .row2 div .l{font-size:0.78rem; opacity:0.75;}
+
+  .open-items{margin-top:28px; display:flex; flex-direction:column; gap:0;}
+  .open-item{display:grid; grid-template-columns:120px 1fr; gap:20px; padding:18px 0; border-bottom:1px solid var(--line);}
+  @media (max-width:600px){ .open-item{grid-template-columns:1fr;} }
+  .open-item:first-child{border-top:1px solid var(--line);}
+  .open-item .kind{font-size:0.82rem; color:var(--ink-muted); padding-top:2px;}
+  .open-item .body strong{display:block; margin-bottom:3px;}
+  .open-item .body span{font-size:0.94rem; color:var(--ink-muted);}
+
+  .team-grid{margin-top:28px; display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:600px){ .team-grid{grid-template-columns:1fr;} }
+  .team-cell{background:var(--paper-raised); padding:20px 24px; font-family:'IBM Plex Mono',monospace; font-size:0.95rem;}
+  .avatar-row{display:flex; align-items:center; gap:18px; margin-top:28px;}
+  .avatar{width:84px; height:84px; border-radius:50%; background:var(--royal); color:#fff; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:1.8rem; font-weight:620; flex:none; overflow:hidden;}
+  .avatar img{width:100%; height:100%; object-fit:cover;}
+  .avatar-note{font-size:0.85rem; color:var(--ink-muted);}
+
+  .downloads{margin-top:28px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  @media (max-width:760px){ .downloads{grid-template-columns:1fr;} }
+  .dl{background:var(--paper-raised); padding:24px;}
+  .dl .ext{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--royal); border:1px solid var(--royal); display:inline-block; padding:2px 6px; border-radius:2px; margin-bottom:10px;}
+  .dl p{font-size:0.9rem; color:var(--ink-muted); margin:0;}
+  a.dl{text-decoration:none; color:inherit; display:block;}
+  a.dl:hover{background:#fff;}
+  a.dl .open{font-size:0.82rem; color:var(--royal); margin-top:10px; display:block;}
+
+  footer{padding:36px 0; color:var(--ink-muted); font-size:0.88rem;}
+  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+
+  /* ---------- Login gate ---------- */
+  .gate{max-width:420px; margin-top:28px; background:var(--paper-raised); border:1px solid var(--line); padding:32px;}
+  .gate .field{margin-bottom:16px;}
+  .gate-hint{margin-top:18px; padding:12px 14px; background:var(--paper); border:1px dashed var(--line); font-size:0.85rem; color:var(--ink-muted);}
+  .gate-hint .mono{display:block; margin-top:4px;}
+  .gate-error{color:var(--coral); font-size:0.88rem; margin-top:10px; display:none;}
+
+  /* ---------- Readings dashboard ---------- */
+  .banner{display:flex; align-items:center; gap:10px; background:rgba(226,163,59,0.14); border:1px solid var(--amber); padding:12px 16px; font-size:0.9rem; margin-top:24px;}
+  .banner .dot{width:8px; height:8px; border-radius:50%; background:var(--amber); flex:none;}
+  .dash{margin-top:28px; background:var(--royal-deep); color:#fff; padding:32px; border-radius:var(--radius);}
+  .dash-top{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:10px;}
+  .dash-phase{font-family:'IBM Plex Mono',monospace; font-size:0.85rem; opacity:0.85; text-transform:uppercase; letter-spacing:0.04em;}
+  .dash-clock{font-family:'IBM Plex Mono',monospace; font-size:0.85rem; opacity:0.85;}
+  .dash-grid{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:22px;}
+  @media (max-width:640px){ .dash-grid{grid-template-columns:1fr;} }
+  .dash-readout .big{font-family:'IBM Plex Mono',monospace; font-size:3rem; line-height:1;}
+  .dash-readout .unit{font-size:1rem; opacity:0.75; margin-left:4px;}
+  .dash-readout .label{font-size:0.82rem; opacity:0.7; margin-top:6px;}
+  .gauge-track{width:100%; height:10px; background:rgba(255,255,255,0.15); border-radius:6px; overflow:hidden; margin-top:10px;}
+  .gauge-fill{height:100%; width:0%; background:var(--amber); border-radius:6px; transition:width 0.1s linear;}
+  .dash-controls{display:flex; gap:10px; margin-top:26px; flex-wrap:wrap;}
+  .dash-controls .btn{border-color:rgba(255,255,255,0.5); color:#fff;}
+  .dash-controls .btn:hover{background:rgba(255,255,255,0.15);}
+  .dash-foot{margin-top:18px; font-size:0.8rem; opacity:0.65;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap row">
+    <a class="wordmark" href="#home">SPCL-1</a>
+    <nav id="nav">
+      <button data-tab="home" aria-current="page">Home</button>
+      <button data-tab="specs">Specs</button>
+      <button data-tab="readings">Readings</button>
+      <button data-tab="team">Team</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HOME ============ -->
+<div class="tab active" data-tab="home">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Beyond Orbit: Democratising Access and Launch Infrastructure</p>
+          <h1>A rocket built from a champagne glass and a golf bag.</h1>
+          <p class="lede">SPCL-1 is a low-cost, home-built sounding rocket, designed entirely from repurposed household materials and verified through flight simulation rather than a live launch. The goal: show that a working rocket design doesn't require an imported kit.</p>
+          <div class="facts-row">
+            <div class="fact"><div class="num">171 m</div><div class="label">Simulated apogee</div></div>
+            <div class="fact"><div class="num">7.2 cal</div><div class="label">Stability margin</div></div>
+            <div class="fact"><div class="num">3</div><div class="label">Household parts in the airframe</div></div>
+          </div>
+        </div>
+        <div>
+          <svg class="rocket-art" viewBox="0 0 320 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Line illustration of the SPCL-1 rocket profile, 60.7 centimetres overall length">
+            <path class="draw" d="M160 20 C180 70 188 120 188 170 L188 330 L132 330 L132 170 C132 120 140 70 160 20 Z" stroke="#2F3B8C" stroke-width="2.5" />
+            <circle cx="160" cy="95" r="7" fill="#B84A52" />
+            <path d="M132 220 L92 300 L132 300 Z" stroke="#2F3B8C" stroke-width="2" fill="none"/>
+            <path d="M188 220 L228 300 L188 300 Z" stroke="#2F3B8C" stroke-width="2" fill="none"/>
+            <line x1="132" y1="330" x2="188" y2="330" stroke="#2F3B8C" stroke-width="2"/>
+            <line x1="50" y1="170" x2="50" y2="330" stroke="#5B6158" stroke-width="1" stroke-dasharray="3 4"/>
+            <text x="40" y="250" fill="#5B6158" font-family="IBM Plex Mono" font-size="11" text-anchor="end" transform="rotate(-90 40 250)">60.7 cm overall</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="wrap">
+      <div class="prose">
+        <p class="eyebrow">The problem</p>
+        <h2>Rocketry kits don't travel well.</h2>
+        <p>Commercial rocket kits and motors are expensive and difficult to import across Africa, which keeps hands-on space education and real payload testing out of reach for many university and grassroots teams. The barrier is cost and access &mdash; not interest, and not talent.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="solution">
+    <div class="wrap">
+      <p class="eyebrow">The approach</p>
+      <h2>Every part is something you can already buy at a party store.</h2>
+      <div class="materials-grid">
+        <div class="material">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#2F3B8C" stroke-width="2"><path d="M14 6 L34 6 L25 24 L23 24 Z"/><line x1="24" y1="24" x2="24" y2="38"/><line x1="15" y1="40" x2="33" y2="40"/></svg>
+          <h3>Nose cone</h3>
+          <div class="role">A plastic champagne flute</div>
+          <p>Pre-shaped and near-zero cost. Sanded down to match the fuselage diameter.</p>
+        </div>
+        <div class="material">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#2F3B8C" stroke-width="2"><rect x="14" y="8" width="20" height="30" rx="4"/><rect x="19" y="4" width="10" height="6" rx="1"/></svg>
+          <h3>Parachute bay</h3>
+          <div class="role">A gas-relief pill bottle</div>
+          <p>Doubles as the nose-to-body shoulder and houses the recovery parachute.</p>
+        </div>
+        <div class="material">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#2F3B8C" stroke-width="2"><rect x="18" y="4" width="12" height="40" rx="2"/></svg>
+          <h3>Fuselage</h3>
+          <div class="role">A golf club divider tube</div>
+          <p>Rigid, correct diameter for standard motor mounts, and reused rather than bought new.</p>
+        </div>
+      </div>
+      <p style="margin-top:28px;"><a href="#readings" data-link="readings">See the simulated readings &amp; flight replay &rarr;</a></p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ SPECS ============ -->
+<div class="tab" data-tab="specs">
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Specification</p>
+      <h2>Anatomy of SPCL-1</h2>
+      <p class="prose">Every component is held to one standardised fuselage diameter, so no custom coupling is needed between repurposed parts.</p>
+
+      <div class="callouts">
+        <div class="callout"><div class="tag">01</div><div class="name">Nose cone</div><div class="spec">Length 12.7 cm<br>Diameter 3.175 cm<br>Polycarbonate, 1.2 g/cm&sup3;</div></div>
+        <div class="callout"><div class="tag">02</div><div class="name">Parachute bay</div><div class="spec">Length 10.5 cm<br>OD 3.175 cm / ID 2.93 cm<br>Wall 0.125 cm (estimated)</div></div>
+        <div class="callout"><div class="tag">03</div><div class="name">Fuselage</div><div class="spec">Length 35 cm<br>OD 3.175 cm / ID 2.93 cm<br>Golf-tube diameter is a sourced standard size</div></div>
+        <div class="callout"><div class="tag">04</div><div class="name">Fin set &amp; motor</div><div class="spec">3 balsa fins, 12 / 6 / 4.5 cm<br>Estes D12 &mdash; 24 mm, 70 mm, ~17 N&middot;s</div></div>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Component</th><th>Material</th><th class="mono">Key dimensions</th><th class="mono">Mass</th></tr></thead>
+          <tbody>
+            <tr><td>Nose cone</td><td>Polycarbonate (champagne flute)</td><td class="mono">12.7 &times; 3.175 cm</td><td class="mono">&mdash;</td></tr>
+            <tr><td>Parachute bay</td><td>Plastic (pill bottle)</td><td class="mono">10.5 cm, OD 3.175 cm</td><td class="mono">&mdash;</td></tr>
+            <tr><td>Fuselage</td><td>Golf-tube plastic</td><td class="mono">35 cm, OD 3.175 cm</td><td class="mono">&mdash;</td></tr>
+            <tr><td>Fin set (&times;3)</td><td>Balsa</td><td class="mono">Root 12 / tip 6 / span 4.5 cm</td><td class="mono">6.2 g</td></tr>
+            <tr><td>Motor</td><td>Estes D12 (commercial, COTS)</td><td class="mono">24 &times; 70 mm, ~17 N&middot;s</td><td class="mono">~42.6 g loaded</td></tr>
+            <tr><td>Parachute</td><td>Ripstop nylon</td><td class="mono">49 cm diameter*</td><td class="mono">~20&ndash;30 g*</td></tr>
+            <tr><td>Rocket, no motor</td><td>&mdash;</td><td class="mono">60.7 cm overall</td><td class="mono">~200 g</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.85rem;color:var(--ink-muted);margin-top:10px;">* Parachute spec is still being reconciled &mdash; see Open items below.</p>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <p class="eyebrow">Honesty, not hand-waving</p>
+      <h2>Open items</h2>
+      <p class="prose">Results are OpenRocket computational predictions, not physical flight validation. These are the specific gaps between this proposal and a real build.</p>
+      <div class="open-items">
+        <div class="open-item"><div class="kind">Recovery</div><div class="body"><strong>Parachute spec unreconciled</strong><span>The model currently mixes an earlier custom 49 cm canopy calculation with a commercial preset selected later in the build &mdash; needs a final decision before this is treated as locked.</span></div></div>
+        <div class="open-item"><div class="kind">Manufacturing</div><div class="body"><strong>Wall thickness is estimated</strong><span>Pill bottle and golf-tube wall thickness are engineering estimates, not sourced manufacturer specs &mdash; worth measuring directly if a physical build goes ahead.</span></div></div>
+        <div class="open-item"><div class="kind">Logistics</div><div class="body"><strong>Motor sourcing unconfirmed</strong><span>Local availability of a 24 mm D-class commercial motor in Nigeria has not been confirmed.</span></div></div>
+        <div class="open-item"><div class="kind">Logistics</div><div class="body"><strong>Launch clearance unconfirmed</strong><span>Airspace/safety clearance for an actual launch has not been arranged and is outside this proposal's scope.</span></div></div>
+        <div class="open-item"><div class="kind">Instrumentation</div><div class="body"><strong>No onboard reading device</strong><span>SPCL-1 carries no flight computer, altimeter, or GPS. Every figure on this site is an OpenRocket prediction, not measured telemetry &mdash; see the Readings tab for why, and what real instrumentation would need.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Files</p>
+      <h2>Downloads</h2>
+      <p class="prose"> &mdash;Other documents rreleating to SPCL-1</p>
+      <div class="downloads">
+        <a class="dl" href="SPLC-1_Proposal.pptx" download><div class="ext">.PPTX</div><p>The 8-slide pitch deck used for presentation day.</p><span class="open">Open file &rarr;</span></a>
+        <a class="dl" href="SPL-1_Bill_of_Materials.csv" download><div class="ext">.CSV</div><p>Full bill of materials with every component's dimensions and role.</p><span class="open">Open file &rarr;</span></a>
+        <a class="dl" href="SPLC-1_Build_Specification.md" download><div class="ext">.MD</div><p>Build specification &mdash; every value needed to re-enter this design in OpenRocket.</p><span class="open">Open file &rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ READINGS ============ -->
+<div class="tab" data-tab="readings">
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Mission control</p>
+      <h2>Readings</h2>
+      <p class="prose">This tab is where live telemetry would appear if SPCL-1 were flying. It isn't, yet &mdash; here's exactly what that means and why.</p>
+
+      <!-- Login gate -->
+      <div id="gate" class="gate">
+        <h3 style="margin-bottom:4px;">Mission control sign-in</h3>
+        <p style="font-size:0.9rem;color:var(--ink-muted);margin-bottom:18px;">Cosmetic only &mdash; there's no server or real account system behind this. Anyone with the demo credentials below can enter.</p>
+        <div class="field">
+          <label for="gate-user">Username</label>
+          <input type="text" id="gate-user" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="gate-pass">Password</label>
+          <input type="password" id="gate-pass" autocomplete="off">
+        </div>
+        <button class="btn solid" id="gate-submit">Enter mission control</button>
+        <div class="gate-error" id="gate-error">Incorrect username or password &mdash; try the demo credentials below.</div>
+        <div class="gate-hint">
+         
+          <span class="mono"></span>
+          <span class="mono"></span>
+        </div>
+      </div>
+
+      <!-- Dashboard, hidden until gate passes -->
+      <div id="dashboard" style="display:none;">
+        <div class="banner"><span class="dot"></span> DEMO MODE &mdash; no physical rocket or onboard transmitter exists. This repla-1's OpenRocket simulation; it is not a live feed.</div>
+ys SPCL
+        <p class="prose" style="margin-top:20px;">These figures come entirely from OpenRocket's physics model, not from an onboard reading device &mdash; SPCL-1 does not currently carry a flight computer, altimeter, or GPS. Nothing here is a sensor reading; it's a prediction from the design's own geometry, mass, and the motor's published data, replayed on a compressed timeline below.</p>
+
+        <div class="dash">
+          <div class="dash-top">
+            <div class="dash-phase" id="dash-phase">Ready</div>
+            <div class="dash-clock"><span id="dash-t">0.0</span>s / 48.8s simulated</div>
+          </div>
+          <div class="dash-grid">
+            <div class="dash-readout">
+              <div class="big"><span id="dash-alt">0</span><span class="unit">m</span></div>
+              <div class="label">Altitude (reconstructed)</div>
+              <div class="gauge-track"><div class="gauge-fill" id="gauge-alt"></div></div>
+            </div>
+            <div class="dash-readout">
+              <div class="big"><span id="dash-vel">0.0</span><span class="unit">m/s</span></div>
+              <div class="label">Vertical speed (derived)</div>
+              <div class="gauge-track"><div class="gauge-fill" id="gauge-vel"></div></div>
+            </div>
+          </div>
+          <div class="dash-controls">
+            <button class="btn" id="dash-play">&#9658; Play replay</button>
+            <button class="btn" id="dash-reset">Reset</button>
+            <button class="btn" id="gate-logout">Log out</button>
+          </div>
+          <div class="dash-foot">Altitude/velocity curve is reconstructed from OpenRocket's summary values (apogee 171 m at 6.46 s, flight time 48.8 s) &mdash; not raw per-second simulation output.</div>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Condition</th><th class="mono">Apogee</th><th class="mono">Max velocity</th><th class="mono">Max accel.</th><th class="mono">Rod exit vel.</th><th class="mono">Flight time</th><th class="mono">Stability</th></tr></thead>
+            <tbody>
+              <tr><td>2 m/s wind (baseline)</td><td class="mono">171 m</td><td class="mono">53.6 m/s</td><td class="mono">115 m/s&sup2;</td><td class="mono">13.6 m/s</td><td class="mono">48.8 s</td><td class="mono">7.24 cal</td></tr>
+              <tr><td>5 m/s wind (gust case)</td><td class="mono">156 m</td><td class="mono">53.0 m/s</td><td class="mono">115 m/s&sup2;</td><td class="mono">13.6 m/s</td><td class="mono">45.2 s</td><td class="mono">7.22 cal</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note"><strong>Open caveat:</strong> rod exit velocity (13.6 m/s) sits just under the 15 m/s guideline for reliable fin stabilisation off the rod &mdash; consistent across both runs, so it's a real design characteristic, not noise.</div>
+
+        <div class="note info">
+          <strong>Why not WiFi for a real build?</strong> WiFi's usable range is tens of metres &mdash; a rocket climbing to 150+ m and drifting under a parachute would drop the connection almost immediately after leaving the pad. Real rocket and CanSat telemetry uses <strong>LoRa</strong> instead: a long-range, low-power radio link that can hold a connection over kilometres. Adding real instrumentation would mean a small LoRa transmitter plus GPS/altimeter in the parachute bay, paired with a ground-station receiver &mdash; the same kind of ground-tracking concept explored earlier for this hackathon track, not a WiFi link.
+        </div>
+
+        <h2 style="margin-top:48px;">Parachute sizing calculator</h2>
+        <p class="prose">Work out canopy diameter for a target landing speed, using the same drag-based method used to size SPCL-1's own recovery chute. Useful for any team sizing a chute for their own design, not just this one.</p>
+        <div class="calc">
+          <div>
+            <div class="field"><label for="mass">Rocket mass at deployment (g)</label><input type="number" id="mass" value="218" min="1" step="1"></div>
+            <div class="field"><label for="speed">Target descent speed (m/s)</label><input type="number" id="speed" value="5" min="0.5" step="0.1"><div class="hint">5 m/s is a gentle landing for a lightweight airframe like this.</div></div>
+            <div class="field"><label for="cd">Drag coefficient (Cd)</label><input type="number" id="cd" value="0.75" min="0.1" step="0.01"><div class="hint">~0.75&ndash;0.8 is typical for a standard round canopy.</div></div>
+            <button class="btn" id="calc-reset">Load SPCL-1's numbers</button>
+          </div>
+          <div class="result">
+            <div class="unit">Canopy diameter</div>
+            <div class="big"><span id="out-cm">49</span> <span style="font-size:1.1rem;">cm</span></div>
+            <div class="sub"><span id="out-in">19.3</span> in</div>
+            <div class="row2">
+              <div><div class="v" id="out-area">1,886</div><div class="l">Canopy area, cm&sup2;</div></div>
+              <div><div class="v" id="out-rad">24.5</div><div class="l">Radius, cm</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ TEAM ============ -->
+<div class="tab" data-tab="team">
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Credits</p>
+      <h2>Team &amp; roles</h2>
+      <div class="avatar-row">
+        <div class="avatar" id="team-avatar">AD</div>
+        <p class="avatar-note">Placeholder initials &mdash; swap in a real photo by replacing the <span class="mono">#team-avatar</span> div's content with an <span class="mono">&lt;img&gt;</span> tag once you have one.</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-cell">Agboola David &mdash; solo entrant</div>
+        <div class="team-cell">Space Club member: Agboola David</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>Space Clubs, Lagos State University</div>
+    <div>Design proposal &mdash; not flight-tested.</div>
+  </div>
+</footer>
+
+<script>
+  // ---------- Tab navigation ----------
+  const navButtons = document.querySelectorAll('#nav button');
+  const tabs = document.querySelectorAll('.tab');
+  function showTab(name){
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+    navButtons.forEach(b => b.toggleAttribute('aria-current', b.dataset.tab === name) || (b.setAttribute('aria-current', b.dataset.tab === name ? 'page' : 'false')));
+    navButtons.forEach(b => { if(b.dataset.tab !== name) b.removeAttribute('aria-current'); });
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    if(history.replaceState) history.replaceState(null, '', '#' + name);
+  }
+  navButtons.forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+  document.querySelectorAll('[data-link]').forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); showTab(a.dataset.link); }));
+  const initial = (location.hash || '#home').slice(1);
+  showTab(['home','specs','readings','team'].includes(initial) ? initial : 'home');
+
+  // ---------- Mission control gate (demo only, no real auth) ----------
+  const GATE_USER = 'agboola', GATE_PASS = 'orbithon2026';
+  document.getElementById('gate-submit').addEventListener('click', () => {
+    const u = document.getElementById('gate-user').value.trim().toLowerCase();
+    const p = document.getElementById('gate-pass').value;
+    if(u === GATE_USER && p === GATE_PASS){
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      document.getElementById('gate-error').style.display = 'none';
+    } else {
+      document.getElementById('gate-error').style.display = 'block';
+    }
+  });
+  document.getElementById('gate-logout').addEventListener('click', () => {
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('gate').style.display = 'block';
+    document.getElementById('gate-user').value = '';
+    document.getElementById('gate-pass').value = '';
+  });
+
+  // ---------- Flight replay (reconstructed from summary values) ----------
+  const T_APOGEE = 6.46, APOGEE = 171, TOTAL_T = 48.8, REPLAY_SECONDS = 16;
+  function altitudeAt(t){
+    if(t <= T_APOGEE){ const f = t / T_APOGEE; return APOGEE * (1 - Math.pow(1 - f, 2)); }
+    const f = (t - T_APOGEE) / (TOTAL_T - T_APOGEE);
+    return APOGEE * (1 - Math.min(f,1));
+  }
+  function velocityAt(t){
+    const dt = 0.05;
+    const a1 = altitudeAt(Math.max(0,t-dt)), a2 = altitudeAt(Math.min(TOTAL_T,t+dt));
+    return (a2 - a1) / (2*dt);
+  }
+  let playing = false, startedAt = 0, elapsedAtPause = 0, rafId = null;
+  const elAlt = document.getElementById('dash-alt'), elVel = document.getElementById('dash-vel');
+  const elT = document.getElementById('dash-t'), elPhase = document.getElementById('dash-phase');
+  const gaugeAlt = document.getElementById('gauge-alt'), gaugeVel = document.getElementById('gauge-vel');
+  const MAXV = 54;
+  function render(t){
+    const alt = altitudeAt(t), vel = t <= 0.001 ? 0 : velocityAt(t);
+    elAlt.textContent = alt.toFixed(0);
+    elVel.textContent = Math.abs(vel).toFixed(1);
+    elT.textContent = t.toFixed(1);
+    gaugeAlt.style.width = Math.min(100,(alt/APOGEE)*100) + '%';
+    gaugeVel.style.width = Math.min(100,(Math.abs(vel)/MAXV)*100) + '%';
+    elPhase.textContent = t <= 0.01 ? 'Ready' : (t < T_APOGEE ? 'Ascent (powered + coast)' : (t < TOTAL_T ? 'Descent (parachute)' : 'Landed'));
+  }
+  function loop(now){
+    const flightT = Math.min(TOTAL_T, elapsedAtPause + (now - startedAt) / 1000 * (TOTAL_T / REPLAY_SECONDS));
+    render(flightT);
+    if(flightT >= TOTAL_T){ playing = false; document.getElementById('dash-play').textContent = '\u25B8 Play replay'; return; }
+    rafId = requestAnimationFrame(loop);
+  }
+  document.getElementById('dash-play').addEventListener('click', (e) => {
+    if(playing){ playing = false; cancelAnimationFrame(rafId); e.target.textContent = '\u25B8 Play replay'; return; }
+    playing = true; startedAt = performance.now(); e.target.textContent = '\u23F8 Pause';
+    rafId = requestAnimationFrame(loop);
+  });
+  document.getElementById('dash-reset').addEventListener('click', () => {
+    playing = false; cancelAnimationFrame(rafId); elapsedAtPause = 0;
+    document.getElementById('dash-play').textContent = '\u25B8 Play replay';
+    render(0);
+  });
+  render(0);
+
+  // ---------- Parachute calculator ----------
+  const massEl = document.getElementById('mass'), speedEl = document.getElementById('speed'), cdEl = document.getElementById('cd');
+  const outCm = document.getElementById('out-cm'), outIn = document.getElementById('out-in'), outArea = document.getElementById('out-area'), outRad = document.getElementById('out-rad');
+  function calc(){
+    const m = parseFloat(massEl.value) / 1000, v = parseFloat(speedEl.value), cd = parseFloat(cdEl.value);
+    if(!m || !v || !cd || m<=0 || v<=0 || cd<=0) return;
+    const g = 9.81, rho = 1.225;
+    const area = (2*m*g)/(rho*v*v*cd);
+    const diameterCm = Math.sqrt((8*m*g)/(Math.PI*rho*v*v*cd)) * 100;
+    outCm.textContent = diameterCm.toFixed(0);
+    outIn.textContent = (diameterCm/2.54).toFixed(1);
+    outArea.textContent = (area*10000).toLocaleString(undefined,{maximumFractionDigits:0});
+    outRad.textContent = (diameterCm/2).toFixed(1);
+  }
+  [massEl, speedEl, cdEl].forEach(el => el.addEventListener('input', calc));
+  document.getElementById('calc-reset').addEventListener('click', () => { massEl.value=218; speedEl.value=5; cdEl.value=0.75; calc(); });
+  calc();
+</script>
+
+</body>
+</html>

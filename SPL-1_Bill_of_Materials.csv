@@ -1,0 +1,14 @@
+Component,Role,Material,Key Dimensions,Mass,Confidence
+Nose cone,Aerodynamic nose / payload shoulder,Polycarbonate (plastic champagne flute),"Length 12.7 cm, diameter 3.175 cm, wall 0.05 cm",approx. per material density,Length/diameter sourced from real product; wall thickness is an estimate
+Parachute bay (Body tube 1),Houses recovery parachute; nose-to-body shoulder,Plastic (gas-relief pill bottle),"Length 10.5 cm, OD 3.175 cm, ID 2.93 cm, wall 0.125 cm",approx. per material density,Length/diameter are researched estimates from comparable commercial bottles; wall thickness estimated
+Fuselage (Body tube 2),Main airframe / motor mount housing,Golf club divider tube,"Length 35 cm, OD 3.175 cm, ID 2.93 cm, wall 0.125 cm",approx. per material density,Diameter sourced as a standard golf-tube size; wall thickness estimated
+Engine block,Retains motor against thrust,Cardboard,"Length 0.5 cm, diameter 2.96 cm (auto)",~0 g,As entered in OpenRocket
+Fin set (x3),Aerodynamic stability,Balsa,"Root chord 12 cm, tip chord 6 cm, span 4.5 cm, thickness 0.3 cm",6.2 g,As entered in OpenRocket
+Fin tabs,Through-the-wall fin mounting,Balsa (part of fin set),"Tab length 6 cm, tab height 1.0 cm, tab position 3 cm",included in fin mass,Recommended values within OpenRocket's allowed maximums
+Motor,Propulsion,Estes D12 (commercial COTS solid motor),"Diameter 24 mm, length 70 mm, total impulse ~17 N·s, avg. thrust 12 N",~42.6 g loaded,Published commercial motor data via OpenRocket's motor database
+Parachute,Recovery,Ripstop nylon,Diameter 49 cm (sized for ~5 m/s descent at ~218 g),~20-30 g,"OPEN ITEM: an alternate commercial preset (SkyAngle Classic 32, ~127 g) was selected at one point during the build and has not been reconciled with this custom value - confirm before finalizing"
+Launch lug,Guides rocket along launch rod during initial ascent,Plastic tube,"Length 5-7 cm, ID ~0.5 cm, mounted on fuselage at/below CG",small,Standard sizing for a lightweight rod-launched rocket
+Shock cord + swivel hooks,Connects parachute to nose assembly at deployment,Elastic braided cord + swivel hooks,sized to bay length,n/a,From original materials list
+Rocket wadding,Protects parachute from ejection charge heat,Standard rocket wadding,placed below parachute bay,n/a,From original materials list
+Overall rocket (no motor),-,-,Length 60.7 cm overall; max diameter 3.175 cm,~200 g,Current OpenRocket model total
+Overall rocket (with motor),-,-,Length 60.7 cm overall,~242 g,Current OpenRocket model total
